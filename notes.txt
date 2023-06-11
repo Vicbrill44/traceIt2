@@ -1,0 +1,17 @@
+Things that have been tested that work in the program thus far:
+    adding a room and a storage at the same time
+    adding an item, provided that a room and storage were provided
+    adding a storage to a room
+    printing all the storages in a room
+    accessing an item from a room
+    adding another room with no storage provided (left blank)
+
+
+
+
+
+
+
+
+
+
