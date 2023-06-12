@@ -36,19 +36,23 @@ class HashMap:
         
     def addKeyValue(self, key: str, value:str = None):
         """ The key is the room and the value is a storage"""
+        # I think I should remove the ability to add a room and a storage at the same time 
         idx = self.getIndex(key)
         if self.map[idx] == None:
             if value is None:
                 self.map[idx] = HashNode(key)
+                print(f"{key} was successfully added")
             else:
                 self.map[idx] = HashNode(key, value)
+                print(f"{key} was successfully added")
         
             self.numKeys += 1
         else:
             if value is None:
-                return print(f"{key} already exist in the map")
+                print(f"{key} already exist")
+                return 
             else:
-                self.map[idx].addStorage(value)
+                self.map[idx].addStorage(value) # I dont like this part of the code that if map[key] is not None then and the user provided a value then we add the value to that key
         
         #rehash if over 70% 
         load = int(((self.mapSize * 70) / 100))
@@ -105,10 +109,29 @@ class HashMap:
         else:
             self.map[idx].addItemtoStorage(storage, item)
             
-        
-        
-        
-        
+    def printAllRooms(self):
+        if self.numKeys == 0:
+            return print("There are no rooms")
+        for node in self.map:
+            if node is not None:
+                print(node.room)
+            
+    def deleteRoom(self, key:str):
+        # There is def a better way to do this, I just wanted to test out this way 
+        # other way would be to get index of key first and then check if it exists and if so del it 
+        if self.numKeys == 0:
+            return print("There are no rooms to delete")
+        for node in self.map:
+            if node is not None:
+                if node.room == key:
+                    #be careful with this as it could be the cause of a bug when deleting a hashNode and setting map[] to none
+                    idx = self.getIndex(key)
+                    self.map[idx] = None
+                    del node
+                    self.numKeys =- 1
+                    print(f"Successfully deleted {key}")
+                    return
+        print(f"Error: {key} does not exist")
         
         
         
