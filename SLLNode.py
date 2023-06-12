@@ -18,7 +18,6 @@ class SLLNode:
 
     def appendItem(self, item:str):
         self.storedItems.append(item)
-        print(self.storedItems[0])
         self.numStoredItems += 1
     
     def printStoredItems(self):

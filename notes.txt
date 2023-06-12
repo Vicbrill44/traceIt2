@@ -5,8 +5,13 @@ Things that have been tested that work in the program thus far:
     printing all the storages in a room
     accessing an item from a room
     adding another room with no storage provided (left blank)
+    popping a storage from a room
+    removing a specified storage from a room works
+    print stored items in a storage works
 
 
+
+Things I want to implement or add:
 
 
 

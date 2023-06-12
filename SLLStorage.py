@@ -62,6 +62,7 @@ class SLLStorage:
         if self.first.storageName == storageName:
             self.first = self.first.next
             self.numberStorages -= 1
+            return
             
         currentNode = self.first
         

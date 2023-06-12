@@ -46,12 +46,23 @@ class Tracer:
         self.tracer.addKeyValue(tutorial_room, tutorial_storage)
         self.tracer.insertItem(tutorial_room, tutorial_storage, tutorial_item)
         self.tracer.map[self.tracer.getIndex(tutorial_room)].addStorage("shelf")
+        self.tracer.map[self.tracer.getIndex(tutorial_room)].addStorage("garage")
         self.tracer.map[self.tracer.getIndex(tutorial_room)].printStorages()
-        print(self.tracer.map[self.tracer.getIndex(tutorial_room)].storages.first.next.storedItems[0] + " made it here")
         self.tracer.map[self.tracer.getIndex(tutorial_room)].addItemtoStorage("shelf", "pencil")
         self.tracer.addKeyValue("sebasRoom")
         self.tracer.map[self.tracer.getIndex("sebasRoom")].addStorage("wall hanger")
+        self.tracer.map[self.tracer.getIndex("sebasRoom")].addStorage("closet")
         self.tracer.map[self.tracer.getIndex("sebasRoom")].printStorages()
+        self.tracer.map[self.tracer.getIndex("sebasRoom")].storages.pop()
+        self.tracer.map[self.tracer.getIndex("sebasRoom")].printStorages()
+        print(self.tracer.map[self.tracer.getIndex("sebasRoom")].storages.first.storageName)
+        self.tracer.map[self.tracer.getIndex(tutorial_room)].storages.remove("garage")
+        self.tracer.map[self.tracer.getIndex(tutorial_room)].addStorage("garage")
+        print("")
+        self.tracer.map[self.tracer.getIndex(tutorial_room)].printStorages()
+        self.tracer.map[self.tracer.getIndex(tutorial_room)].storages.addItem("garage", "altima")
+        self.tracer.map[self.tracer.getIndex(tutorial_room)].storages.first.printStoredItems()
+        
         
         """
         while(choice != 5):
