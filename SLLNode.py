@@ -18,12 +18,19 @@ class SLLNode:
 
     def appendItem(self, item:str):
         self.storedItems.append(item)
-        self.numStoredItems += 1
+        self.numStoredItems = self.numStoredItems + 1
     
     def printStoredItems(self):
+        print("Here are all the stored items: ")
         for item in self.storedItems:
             print(item)
     
+    def removeItem(self, item: str):
+        if item in self.storedItems:
+            self.storedItems.remove(item)
+            self.numStoredItems = self.numStoredItems - 1
+            return 
+        
 
 
 

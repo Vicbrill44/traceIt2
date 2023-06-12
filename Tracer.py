@@ -87,6 +87,10 @@ class Tracer:
                 self.tracer.deleteRoom(delete_room)
                 print("")
             elif choice == "4":
+                # Error here when we add a room, then delete it, then add it back, and then try to show all rooms 
+                # it tells me that no rooms exist
+                # pretty sure it comes from self.numKeys equalling 0 for some reason when it 
+                # update: seems to be working now after changing self.numKeys -= 1 to explicit
                 print("Here are all the current rooms:")
                 self.tracer.printAllRooms()
                 print("")
@@ -99,31 +103,41 @@ class Tracer:
                 print("")
             
     def performOperationRoom(self):
-        array_name = input("Enter the name of the room you want to perform the operation on: ")
-        if self.tracer.map[self.tracer.getIndex(array_name)] is None:
-            print(f"Error: The room '{array_name}' does not exist.")
+        print("Here are all the current rooms:")
+        self.tracer.printAllRooms()
+        room_name = input("Enter the name of the room you want to perform the operation on: ")
+        idx = self.tracer.getIndex(room_name)   # get the index of the room for all purposes
+        
+        if self.tracer.map[idx] is None:
+            print(f"Error: The room '{room_name}' does not exist.")
             return 
         while True:
-            print(f"\nOperations for array '{array_name}':")
+            print(f"\nOperations for room '{room_name}':")
             print("1. Add a storage")
             print("2. Perform an operation on a storage")
             print("3. Remove a storage")
-            print("4. Pop a storage")
+            print("4. Pop a storage (remove the most recently added storage in the room)")
             print("5. Show all storages")
             print("6. Done")
+            print("")
             
             operation = input("Enter an operation: ")
             
             if operation == "1":
-                pass
+                storage = input("Please enter the name of the storage you want to add: ")
+                self.tracer.map[idx].addStorage(storage)
             elif operation == "2":
-                self.performOperationStorage()
+                self.performOperationStorage(idx)
             elif operation == "3":
-                pass
+                storage = input("Please enter the name of the storage you want to remove: ")
+                self.tracer.map[idx].storages.remove(storage)
             elif operation == "4":
-                pass
+                items = self.tracer.map[idx].delRecentlyAddedStorage()
+                print("Here are all the items from the deleted storage: ")
+                for item in items:
+                    print(f"{item}")
             elif operation == "5":
-                pass
+                self.tracer.map[idx].printStorages()
             elif operation == "6":
                 break
             else:
@@ -131,8 +145,40 @@ class Tracer:
                 
                 
                 
-    def performOperationStorage(self):
-        pass    
+    def performOperationStorage(self, idx:int):
+        self.tracer.map[idx].storages.printList()   # print all the storages in the room
+        storage_name = input("Enter the name of the storage you want to perform the operation on: ")
+        strExist = self.tracer.map[idx].storages.findStorage(storage_name)
+        if strExist == -1:
+            print(f"Error: The storage '{storage_name}' does not exist")
+            return
+        
+        while True:
+            print(f"\nOperations for storage '{storage_name}':")
+            print("1. Add an item")
+            print("2. Remove item")
+            print("3. show all items")
+            print("4. Done")
+            print("")
+        
+            operation = input("Enter an operation: ")
+            
+            if operation == "1":
+                item = input("Enter the item you want to add: ")
+                self.tracer.map[idx].storages.addItem(storage_name, item)
+                print(f"Succesfully added the item: '{item}' to '{storage_name}'")
+            elif operation == "2":
+                # left off here
+                item = input("Enter the item you want to remove: ")
+                self.tracer.map[idx].storages.removeItemfromStorage(storage_name, item)
+            elif operation == "3":
+                self.tracer.map[idx].storages.printStorageItems(storage_name)
+            elif operation == "4":
+                break
+            else:
+                print(f"Error: Invalid operation '{operation}'")
+        
+        
                 
             
                 

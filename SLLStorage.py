@@ -40,8 +40,10 @@ class SLLStorage:
     def printList(self):
         currentNode = self.first
         if self.numberStorages == 0:
-            return print("There are no storages to print")
+            print("There are no storages to print")
+            return 
         
+        print(f"Here are all of the storages: ")
         while currentNode:
             print(currentNode.storageName)
             currentNode = currentNode.next
@@ -49,6 +51,7 @@ class SLLStorage:
     def pop(self) -> List[str]:
         # remove storage from the beginning of the list and return the items stored in that storage
         items = self.first.storedItems
+        print(f"Successfully removed the most recently added storage: {self.first.storageName}")
         self.first = self.first.next    # if no songs after self.first then it will be None
         self.numberStorages -= 1
         return items
@@ -62,6 +65,7 @@ class SLLStorage:
         if self.first.storageName == storageName:
             self.first = self.first.next
             self.numberStorages -= 1
+            print(f"Successfully removed {storageName}")
             return
             
         currentNode = self.first
@@ -70,6 +74,7 @@ class SLLStorage:
             if currentNode.next.storageName == storageName:
                 currentNode.next = currentNode.next.next
                 self.numberStorages -= 1
+                print(f"Successfully removed {storageName}")
                 return
             currentNode = currentNode.next
         
@@ -98,11 +103,33 @@ class SLLStorage:
         
         return found
     
+    def removeItemfromStorage(self, strgName:str, item:str):
+        if self.numberStorages == 0:
+            return print("There are no storages to remove")
+        
+        currentNode = self.first
+        
+        while currentNode:
+            if currentNode.storageName == strgName:
+                currentNode.removeItem(item)
+                print(f"Successfully removed {item} from {strgName}")
+                return
+            
+            currentNode = currentNode.next
+
+        print(f"Error: The storage '{strgName}' does not exist in this room")
     
-    
-    
-    
-    
+    def printStorageItems(self, strgName):
+        if self.numberStorages == 0:
+            return print("There are no storages to print items from")
+        currentNode = self.first
+        while currentNode:
+            if currentNode.storageName == strgName:
+                currentNode.printStoredItems()
+                return
+            currentNode = currentNode.next
+        
+        print(f"Error: The storage '{strgName}' does not exist in this room")
     
     
     

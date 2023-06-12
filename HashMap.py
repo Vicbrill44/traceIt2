@@ -41,19 +41,20 @@ class HashMap:
         if self.map[idx] == None:
             if value is None:
                 self.map[idx] = HashNode(key)
+                self.numKeys = self.numKeys + 1
                 print(f"{key} was successfully added")
             else:
                 self.map[idx] = HashNode(key, value)
+                self.numKeys = self.numKeys + 1
                 print(f"{key} was successfully added")
-        
-            self.numKeys += 1
         else:
             if value is None:
                 print(f"{key} already exist")
                 return 
             else:
                 self.map[idx].addStorage(value) # I dont like this part of the code that if map[key] is not None then and the user provided a value then we add the value to that key
-        
+                return
+                
         #rehash if over 70% 
         load = int(((self.mapSize * 70) / 100))
         if self.numKeys >= load:
@@ -111,7 +112,8 @@ class HashMap:
             
     def printAllRooms(self):
         if self.numKeys == 0:
-            return print("There are no rooms")
+            print("There are no rooms")
+            return 
         for node in self.map:
             if node is not None:
                 print(node.room)
@@ -128,7 +130,7 @@ class HashMap:
                     idx = self.getIndex(key)
                     self.map[idx] = None
                     del node
-                    self.numKeys =- 1
+                    self.numKeys = self.numKeys - 1
                     print(f"Successfully deleted {key}")
                     return
         print(f"Error: {key} does not exist")
