@@ -12,7 +12,10 @@ Things that have been tested that work in the program thus far:
 
 
 Things I want to implement or add:
+    delete node from the hashmap when rehashing
 
+Bugs:
+    when i try to pop a storagae from a room that doesnt have any storages it gives me an error [fixed]
 
 
 

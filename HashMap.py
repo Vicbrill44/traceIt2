@@ -26,7 +26,7 @@ Class methods:
 class HashMap:
     
     def __init__(self):
-        self.mapSize = 61
+        self.mapSize = 7
         self.numKeys = 0     #number of rooms in the hashMap
         self.collFunCollisions = 0   #number of collisions caused by the collision handling function
         self.hashCollisions = 0 #number of collisions caused by the hash function
@@ -58,49 +58,133 @@ class HashMap:
         #rehash if over 70% 
         load = int(((self.mapSize * 70) / 100))
         if self.numKeys >= load:
+            print("rehashing")
             self.reHash()
         
         
-    def getIndex(self, key:str) -> int:
-        idx = self.calcHash(key)
-        if self.map[idx] == None or self.map[idx].room == key:
-            return idx
+    def getIndex(self, key:str, isReHashing:bool = False, newHash:int = 0) -> int:
+        if not isReHashing:
+            idx = self.calcHash(key)
+            if self.map[idx] == None or self.map[idx].room == key:
+                return idx
+            else:
+                # We have a collision
+                self.hashCollisions += 1
+                idx = self.collisonFunction(idx, key)
+                return idx
         else:
-            # We have a collision
-            self.hashCollisions += 1
-            idx = self.collisonFunction(idx, key)
+            idx = self.calcHash(key, newHash)
             return idx
+            # we will figure out if we have a collision for the new hash in the reshashing method
+            
             
 
-    def calcHash(self, k: str) -> int:
-        stringSize = len(k)
-        h = 0 
-        prime = 11
-        if stringSize == 1:
-            h = ord(k[0]) % self.mapSize
-        elif stringSize == 2:
-            h = ((ord(k[0])) + (ord(k[1]) * prime)) % self.mapSize
+    def calcHash(self, k: str, newHash:int = 0) -> int:
+        if newHash == 0:
+            stringSize = len(k)
+            h = 0 
+            prime = 11
+            if stringSize == 1:
+                h = ord(k[0]) % self.mapSize
+            elif stringSize == 2:
+                h = ((ord(k[0])) + (ord(k[1]) * prime)) % self.mapSize
+            else:
+                h = ((ord(k[0])) + (ord(k[1]) * prime) + (ord(k[2]) * (prime*prime))) % self.mapSize           
+            
         else:
-            h = ((ord(k[0])) + (ord(k[1]) * prime) + (ord(k[2]) * (prime*prime))) % self.mapSize           
+            stringSize = len(k)
+            h = 0 
+            prime = 11
+            if stringSize == 1:
+                h = ord(k[0]) % newHash
+            elif stringSize == 2:
+                h = ((ord(k[0])) + (ord(k[1]) * prime)) % newHash
+            else:
+                h = ((ord(k[0])) + (ord(k[1]) * prime) + (ord(k[2]) * (prime*prime))) % newHash
+            
+        return h
         
-        return h 
-
+    def getClosePrime(self) -> int:
+        primesList = [1, 61, 97, 131, 173, 211, 251, 293, 337, 379, 419, 457, 499, 541, 577,
+			          619, 661, 701, 739, 773, 811, 853, 887, 929, 967, 1009, 1049, 1091, 1129,
+			          1169, 1201, 1249, 1291, 1327, 1367, 1409, 1451, 1487, 1523, 1567, 1607,
+			          1657, 1693, 1733, 1777, 1811, 1847, 1889, 1931, 1979, 2017, 2053, 2099,
+			          2137, 2179, 2221, 2267, 2309, 2347, 2381, 2417, 2459, 2503, 2539, 2591,
+			          2633, 2683, 2719, 2767, 2803, 2843, 2887, 2939, 2971, 3011, 3049, 3089,
+			          3137, 3181, 3221, 3259, 3299, 3343, 3389, 3433, 3469, 3511, 3557, 3593,
+			          3631, 3671, 3709, 3761, 3803, 3847, 3881, 3919, 3967, 4007, 4051, 4091,
+			          4127, 4177, 4217, 4259, 4297, 4339, 4373, 4421, 4463, 4507, 4547, 4591,
+			          4639, 4679, 4721, 4759, 4801, 4831, 4877, 4919, 4951]
+        
+        primeToFind = self.mapSize * 2
+        primeListLength = len(primesList)
+        low = 0
+        high = primeListLength - 1
+        mid = 0
+        foundPrime = 0
+        while low <= high:
+            mid = int(low + (high - low) / 2)
+            if primesList[mid] > primeToFind:
+                foundPrime = mid
+                high = mid - 1
+            else:
+                low = mid + 1
+        foundPrime = primesList[foundPrime]
+        return foundPrime
+        
+            
     def reHash(self):
-        pass
+         oldMapSize = self.mapSize
+         newHashPrime = self.getClosePrime()
+         newIdx = 0
+         newMap = [None] * newHashPrime
+         self.numKeys = 0   #set the numKeys back to zero
+         i = 0
+         while i < oldMapSize:
+             currentHashNode = self.map[i]
+             if currentHashNode is not None:
+                 tempNode = currentHashNode
+                 newIdx = self.getIndex(tempNode.room, True, newHashPrime)
+                 #check for collisions
+                 if newMap[newIdx] == None:
+                    newMap[newIdx] = tempNode
+                 else:
+                    # We have a collision
+                    newIdx = self.collisonFunction(newIdx, tempNode.room, True, newHashPrime, newMap)
+                    newMap[newIdx] = tempNode
+                 
+                 self.numKeys = self.numKeys + 1
+             
+             i = i + 1
+                 #we should also delete the node from the original 
+        
+         self.map = newMap
+         self.mapSize = newHashPrime   
+            
+         
 
-    def collisonFunction(self, idx: int, key:str) -> int:
+    def collisonFunction(self, idx: int, key:str, isReHashing:bool = False, newHash:int = 0, newMap = None) -> int:
         counter = 0
         probing = idx
-        while self.map[probing] != None:
-            if self.map[probing].room == key:
+        if not isReHashing:
+            while self.map[probing] != None:
+                if self.map[probing].room == key:
+                    self.collFunCollisions += 1
+                    break
+                probing = (probing + int(pow(counter, counter))) % self.mapSize
+                counter += 1
+                if probing > self.mapSize:
+                    probing = 0
                 self.collFunCollisions += 1
-                break
-            probing = (probing + int(pow(counter, counter))) % self.mapSize
-            counter += 1
-            if probing > self.mapSize:
-                probing = 0
-            self.collFunCollisions += 1
-        
+        else:
+            while newMap[probing] != None:
+                if newMap[probing].room == key:
+                    break
+                probing = (probing + int(pow(counter, counter))) % newHash
+                counter += 1
+                if probing > newHash:
+                    probing = 0
+            
         return probing
 
     def insertItem(self, key:str, storage:str, item:str):

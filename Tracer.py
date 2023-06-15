@@ -133,6 +133,8 @@ class Tracer:
                 self.tracer.map[idx].storages.remove(storage)
             elif operation == "4":
                 items = self.tracer.map[idx].delRecentlyAddedStorage()
+                if items is None:
+                    return
                 print("Here are all the items from the deleted storage: ")
                 for item in items:
                     print(f"{item}")

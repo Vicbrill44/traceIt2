@@ -49,6 +49,9 @@ class SLLStorage:
             currentNode = currentNode.next
 
     def pop(self) -> List[str]:
+        if self.numberStorages == 0:
+            print("Error: There are no storages to pop")
+            return
         # remove storage from the beginning of the list and return the items stored in that storage
         items = self.first.storedItems
         print(f"Successfully removed the most recently added storage: {self.first.storageName}")
