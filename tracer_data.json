@@ -1,0 +1,74 @@
+{
+    "map": [
+        {
+            "room": "kev",
+            "storage": [
+                {
+                    "Storage Name": "closet",
+                    "Items": [
+                        "shoes",
+                        "clothes",
+                        "pencils",
+                        "gun"
+                    ]
+                }
+            ]
+        },
+        {
+            "room": "vic",
+            "storage": [
+                {
+                    "Storage Name": "sdjkdf",
+                    "Items": []
+                }
+            ]
+        },
+        {
+            "room": "seb",
+            "storage": [
+                {
+                    "Storage Name": "vanity",
+                    "Items": [
+                        "shaver",
+                        "paste"
+                    ]
+                },
+                {
+                    "Storage Name": "garage",
+                    "Items": [
+                        "car",
+                        "tool;s",
+                        "jack"
+                    ]
+                },
+                {
+                    "Storage Name": "sdjafs",
+                    "Items": []
+                }
+            ]
+        },
+        {
+            "room": "lal",
+            "storage": null
+        },
+        {
+            "room": "big",
+            "storage": [
+                {
+                    "Storage Name": "bo",
+                    "Items": [
+                        "bow",
+                        "checks",
+                        "check#234"
+                    ]
+                },
+                {
+                    "Storage Name": "clo",
+                    "Items": []
+                }
+            ]
+        }
+    ],
+    "mapSize": 61,
+    "numKeys": 5
+}

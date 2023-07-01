@@ -1,4 +1,5 @@
 from HashMap import HashMap
+import json
 
 """ 
 A tracer will essentially be the program itself it will...
@@ -28,7 +29,7 @@ Notes:
 class Tracer:
     
     def __init__(self):
-        self.tracer = HashMap()
+        self.tracer = self.load_data()          # new shit, old: HashMap()
         self.interface()
 
     def interface(self):
@@ -37,33 +38,12 @@ class Tracer:
         #if so then we can bypass this tutorial part and just go straight to the interface
         #we need to make sure that when we load the json file, it loads as a hashmap 
         #Also right off the bat we should dump all of the room names so the user can see them
-        print("Welcome to TraceIt")
-        tutorial_room = input("Lets start by creating a room. A room can be anything from a bedroom, living room, bathroom, garage, truck, etc.\nEnter the name of your first room:\n")
-        tutorial_storage = input("Now that we we have a room, lets add a storage in that room. A storage can be a desk, vanity, folder, locker, etc.\nEnter the name of your storage:\n") 
-        tutorial_item = input("Now that we have a room and a storage in that room, lets add an item in that storage. An item can be a pencil, check, pen, paper, etc.\nEnter the name of an item:\n")
-        
-        # simple testing code
-        # code to add a room and a storage and an item        
-        self.tracer.addKeyValue(tutorial_room, tutorial_storage)
-        self.tracer.insertItem(tutorial_room, tutorial_storage, tutorial_item)
-        # self.tracer.map[self.tracer.getIndex(tutorial_room)].addStorage("shelf")
-        # self.tracer.map[self.tracer.getIndex(tutorial_room)].addStorage("garage")
-        # self.tracer.map[self.tracer.getIndex(tutorial_room)].printStorages()
-        # self.tracer.map[self.tracer.getIndex(tutorial_room)].addItemtoStorage("shelf", "pencil")
-        # self.tracer.addKeyValue("sebasRoom")
-        # self.tracer.map[self.tracer.getIndex("sebasRoom")].addStorage("wall hanger")
-        # self.tracer.map[self.tracer.getIndex("sebasRoom")].addStorage("closet")
-        # self.tracer.map[self.tracer.getIndex("sebasRoom")].printStorages()
-        # self.tracer.map[self.tracer.getIndex("sebasRoom")].storages.pop()
-        # self.tracer.map[self.tracer.getIndex("sebasRoom")].printStorages()
-        # print(self.tracer.map[self.tracer.getIndex("sebasRoom")].storages.first.storageName)
-        # self.tracer.map[self.tracer.getIndex(tutorial_room)].storages.remove("garage")
-        # self.tracer.map[self.tracer.getIndex(tutorial_room)].addStorage("garage")
-        # print("")
-        # self.tracer.map[self.tracer.getIndex(tutorial_room)].printStorages()
-        # self.tracer.map[self.tracer.getIndex(tutorial_room)].storages.addItem("garage", "altima")
-        # self.tracer.map[self.tracer.getIndex(tutorial_room)].storages.first.printStoredItems()
-        # self.tracer.printAllRooms()
+        # print("Welcome to TraceIt")
+        # tutorial_room = input("Lets start by creating a room. A room can be anything from a bedroom, living room, bathroom, garage, truck, etc.\nEnter the name of your first room:\n")
+        # tutorial_storage = input("Now that we we have a room, lets add a storage in that room. A storage can be a desk, vanity, folder, locker, etc.\nEnter the name of your storage:\n") 
+        # tutorial_item = input("Now that we have a room and a storage in that room, lets add an item in that storage. An item can be a pencil, check, pen, paper, etc.\nEnter the name of an item:\n")
+        # self.tracer.addKeyValue(tutorial_room, tutorial_storage)
+        # self.tracer.insertItem(tutorial_room, tutorial_storage, tutorial_item)
         
         while(choice != "5"):
             print("What would you like to do?")
@@ -96,6 +76,7 @@ class Tracer:
                 print("")
             elif choice == "5":
                 print("")
+                self.save_data()    #new shit
                 print("GOODBYE!")
                 break
             else:
@@ -170,7 +151,6 @@ class Tracer:
                 self.tracer.map[idx].storages.addItem(storage_name, item)
                 print(f"Succesfully added the item: '{item}' to '{storage_name}'")
             elif operation == "2":
-                # left off here
                 item = input("Enter the item you want to remove: ")
                 self.tracer.map[idx].storages.removeItemfromStorage(storage_name, item)
             elif operation == "3":
@@ -180,7 +160,22 @@ class Tracer:
             else:
                 print(f"Error: Invalid operation '{operation}'")
         
+    # new shit
         
+    def load_data(self):
+        try:
+            with open('tracer_data.json', 'r') as f:
+                data = json.load(f)
+            print("Loaded data from file.")
+            return HashMap.from_dict(data)
+        except FileNotFoundError:
+            print("No data file found, starting fresh.")
+            return HashMap()
+
+    def save_data(self):
+        with open('tracer_data.json', 'w') as f:
+            json.dump(self.tracer.to_dict(), f, indent=4)
+        print("Saved data to file.")
                 
             
                 

@@ -18,13 +18,18 @@ Class methods:
 
 
 class SLLStorage:
-    def __init__(self, storage:str = None):
+    def __init__(self, storage=None):
         if storage is None:
             self.first = None
             self.numberStorages = 0
         else:
-            self.first = SLLNode(storage)
-            self.numberStorages = 1
+            self.first = storage
+            self.numberStorages = 0
+            currentNode = self.first
+            while currentNode:
+                #print(currentNode.storageName)
+                self.numberStorages += 1
+                currentNode = currentNode.next         
 
     def appendStorage(self, storage:str):
         # add a node to the beginning of the list
@@ -133,6 +138,17 @@ class SLLStorage:
             currentNode = currentNode.next
         
         print(f"Error: The storage '{strgName}' does not exist in this room")
+    
+    # New shit
+    
+    def to_dict(self):
+        return self.first.to_dict() if self.first else None
+
+    @classmethod
+    def from_dict(cls, data):
+        linked_list = SLLNode.from_dict(data)
+        return cls(linked_list)
+
     
     
     

@@ -26,17 +26,22 @@ Class methods:
 
 class HashNode:
     
-    def __init__(self, key:str, value:str = None):
-        if value is None:
-            # key is inputted but value is not
-            self.room = key
+    def __init__(self, key:str, storage=None):
+        self.room = key
+        if storage is not None:
+            # means we have a storage
+            self.storages = storage
+            counter = 0
+            currentNode = self.storages.first
+            while currentNode:
+                # because we loaded in from json we must figure out how many storages we have since we bypassed using json
+                counter += 1
+                currentNode = currentNode.next
+            self.numStorages = counter
+        else:
+            # means we are starting fresh
             self.storages = SLLStorage()
             self.numStorages = 0
-        else:
-            # both key and value are inputted
-            self.room = key
-            self.storages = SLLStorage(value)
-            self.numStorages = 1
       
     def addStorage(self, storageName:str):
         # add a storage
@@ -78,4 +83,14 @@ class HashNode:
         return exists
     
     
-    
+    # New Shit
+    def to_dict(self):
+        return {
+            'room': self.room,
+            'storage': self.storages.to_dict()
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        storage = SLLStorage.from_dict(data['storage'])
+        return cls(data['room'], storage)

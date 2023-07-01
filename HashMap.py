@@ -34,26 +34,18 @@ class HashMap:
         self.map = [None] * self.mapSize
         
         
-    def addKeyValue(self, key: str, value:str = None):
+    def addKeyValue(self, key: str):
         """ The key is the room and the value is a storage"""
         # I think I should remove the ability to add a room and a storage at the same time 
         idx = self.getIndex(key)
+        print(idx)
         if self.map[idx] == None:
-            if value is None:
-                self.map[idx] = HashNode(key)
-                self.numKeys = self.numKeys + 1
-                print(f"{key} was successfully added")
-            else:
-                self.map[idx] = HashNode(key, value)
-                self.numKeys = self.numKeys + 1
-                print(f"{key} was successfully added")
+            self.map[idx] = HashNode(key)
+            self.numKeys = self.numKeys + 1
+            print(f"{key} was successfully added")
         else:
-            if value is None:
-                print(f"{key} already exist")
-                return 
-            else:
-                self.map[idx].addStorage(value) # I dont like this part of the code that if map[key] is not None then and the user provided a value then we add the value to that key
-                return
+            print(f"{key} already exist")
+            return 
                 
         #rehash if over 70% 
         load = int(((self.mapSize * 70) / 100))
@@ -220,5 +212,25 @@ class HashMap:
         print(f"Error: {key} does not exist")
         
         
-        
+    # New shit
+    def to_dict(self):
+        return {
+            'map': [room.to_dict() for room in self.map if room is not None],
+            'mapSize': self.mapSize,
+            'numKeys': self.numKeys
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        instance = cls()
+        for room in data['map']:
+            key = HashNode.from_dict(room)
+            instance.addKeyValue(key.room)  #issue when loading from json we essentially create a new room but dont bring with it its components
+            # we are essentially overwriting the newly added key value because it was just a placeholder for the key variable we got which holds the full hashnode, the other was naked with only its room name and nothing else
+            idx = instance.getIndex(key.room)
+            instance.map[idx] = key
+            
+        instance.mapSize = data['mapSize']
+        instance.numKeys = data['numKeys']
+        return instance
         
