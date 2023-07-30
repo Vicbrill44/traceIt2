@@ -44,7 +44,24 @@
                 {
                     "Storage Name": "sdjafs",
                     "Items": []
+                },
+                {
+                    "Storage Name": "bath",
+                    "Items": [
+                        "soap",
+                        "shampoo",
+                        "fresh"
+                    ]
+                },
+                {
+                    "Storage Name": "parent room",
+                    "Items": [
+                        "bed",
+                        "keys",
+                        "towel"
+                    ]
                 }
+
             ]
         },
         {

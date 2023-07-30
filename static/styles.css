@@ -1,0 +1,196 @@
+/* This is all the standard font settings */
+
+h1 {
+
+    font-size: 48px;
+    font-family: brevia, sans-serif;
+    font-style: normal;
+}
+
+h2 {
+    font-size: 32px;
+    font-family: brevia, sans-serif;
+    font-style: normal;
+}
+
+h3 {
+    font-size: 24px;
+    font-family: brevia, sans-serif;
+    font-style: normal;
+
+}
+
+h5 {
+
+    font-size: 18px;
+    font-family: brevia, sans-serif;
+    font-style: normal;
+
+}
+
+h6 {
+
+    font-size: 14px;
+    font-family: brevia, sans-serif;
+    font-style: normal;
+
+}
+
+body{
+    background-color: #0F1923;
+}
+
+/* Global: This is the container for the entire css */
+.container{
+
+    max-width: 1304px;
+    min-height: 98px;
+    margin: 0 auto;
+
+}
+
+.container h1{
+    text-align: center;
+}
+.start_screen {
+    width: 100%;
+    min-height: 400px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.sc_mainbuttons{
+    width: 60%;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+.sc_mb_question h2 {
+    text-align: center;
+} 
+
+.sc_mb_option1, .sc_mb_option2, .sc_mb_option3, .sc_mb_option4 {
+    background-color: antiquewhite;
+    min-height: 100px;
+    margin-top: 40px;
+    text-align: center;
+}
+.sc_mb_option1, .sc_mb_option2, .sc_mb_option3, .sc_mb_option4 h2{
+    padding-top: 30px;
+}
+
+.sc_hover_buttons:hover{
+    cursor: pointer;
+    color: blue;
+}
+
+
+.sc_terminal{
+    background-color: aqua;
+    width: 35%;
+    min-height: 100px;
+}
+
+p.terminal_room {
+    font-size: 40px;
+}
+
+.bigbox{
+    background-color: rgb(255, 0, 166);
+    min-height: 76px;
+    width: 100%; 
+}
+/* This is where room_operations.html starts */
+.all_mainbuttons{
+    width: 100%;
+    min-height: 76px;
+    background-color:beige;
+    display:flex;
+    justify-content: space-evenly;
+}
+.o_rooms{
+    width: 100%;
+    min-height: 76px;
+    background-color:pink;
+    display:flex;
+    flex-direction:column;
+    text-align: center;
+    gap:10px;
+}
+.or_createStorage, .or_deleteStorage {
+    width: 100%;
+}
+
+
+.or_hoverbuttons:hover{
+    cursor: pointer;
+    color: blue;
+}
+
+/* will do next */
+.o_storages{
+    width: 100%;
+    min-height: 76px;
+    background-color:yellow;
+    display:flex;
+    flex-direction:column;
+    text-align: center;
+    gap:10px;
+}
+
+.os_createItem, .os_deleteItem {
+    width: 100%;
+}
+
+.os_hoverbuttons:hover{
+    cursor: pointer;
+    color: blue;
+}
+
+
+.room_details {
+    background-color: rgb(87, 147, 193);
+    min-height: 76px;
+    width: 100%;
+}
+.currentRoom_header{
+    text-align: center;
+}
+.room_name {
+    text-align: center;
+}
+
+.all_storages{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 40px;
+}
+.storage_box{
+    background-color: bisque;
+    min-height: 76px;
+    width:400px
+}
+.storage_name {
+    background-color:cornflowerblue;
+    width: 100%;
+    min-height: 50px;
+    text-align: center;
+}
+
+.o_terminal{
+    background-color: aqua;
+    width: 100%;
+    min-height: 100px;
+
+}
+
+
+
+
+
+
+
+
+
+

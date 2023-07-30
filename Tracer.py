@@ -30,20 +30,81 @@ class Tracer:
     
     def __init__(self):
         self.tracer = self.load_data()          # new shit, old: HashMap()
-        self.interface()
+        #self.interface()
+        
+    def get_rooms(self):
+        all_rooms = []        
+        entire_json = self.tracer.to_dict()
+        for room in entire_json['map']:
+            room_name = room['room']
+            all_rooms.append(room_name)
+        return all_rooms
+    
+    def get_room(self, room_name):
+        entire_json = self.tracer.to_dict()
+        for room in entire_json['map']:
+            if room['room'] == room_name:
+                return room
+        return {"Error": f"{room_name} does not exist"}
 
-    def interface(self):
+    def add_room(self, room_name):
+        isAdded = self.tracer.addKeyValue(room_name)
+        if isAdded == -1:
+            return {"Error": "already exists"}
+        return {"Succesful": f"{room_name} Added"}
+        
+    def del_room(self, room_name):
+        is_del = self.tracer.deleteRoom(room_name)
+        if is_del == -1:
+            return {"Error": "There are no rooms to delete"}
+        elif is_del == 0:
+            return {"Error": "That room does not exist"}
+        else:
+            return {"Succesful": f"{room_name} deleted"}
+   
+    def add_storage(self, room_name, storage_name):
+        idx = self.tracer.getIndex(room_name)
+        storage = self.tracer.map[idx].addStorage(storage_name)
+        if storage == -1:
+            return {"Error": "Please enter a valid storage name that is not blank"}
+        elif storage == 0:
+            return {"Error": f"{storage_name} does not exist"}
+        else:
+            return {"Succesful": f"{storage_name} added in the room called {room_name}"}
+    
+    def delete_storage(self, room_name, storage_name):
+        idx = self.tracer.getIndex(room_name)
+        del_storage = self.tracer.map[idx].storages.remove(storage_name)
+        if del_storage == -1:
+            return {"Error": f"{storage_name} does not exists"}
+        elif del_storage == 0:
+            return {"Error": "There are no storages to delete"}
+        else:
+            return {"Succesful": f"{storage_name} was successfully deleted"}
+            
+    def add_item(self, room_name, storage_name, item_name):
+        idx = self.tracer.getIndex(room_name)
+        create_item = self.tracer.map[idx].storages.addItem(storage_name, item_name)
+        if create_item == -1:
+            return {"Error": f"{storage_name} does not exists in this room"}
+        elif create_item == 0:
+            return {"Error": "There are no storages to add an item to"}
+        else:
+            return {"Succesful": f"successfully added {item_name} to {storage_name}"}
+        
+    def del_item(self, room_name, storage_name, item_name):
+        idx = self.tracer.getIndex(room_name)
+        item = self.tracer.map[idx].storages.removeItemfromStorage(storage_name, item_name)
+        if item == -1:
+            return {"Error": f"{storage_name} does not exists in this room"}
+        elif item == 0:
+            return {"Error": "There are no storages to delete an item from"}
+        else:
+            return {"Succesful": f"successfully deleted {item_name} from {storage_name}"}
+        
+# This is the terminal UI
+    """def interface(self):
         choice = 0
-        #write code that checks first to see if the user already has a json file with content in it
-        #if so then we can bypass this tutorial part and just go straight to the interface
-        #we need to make sure that when we load the json file, it loads as a hashmap 
-        #Also right off the bat we should dump all of the room names so the user can see them
-        # print("Welcome to TraceIt")
-        # tutorial_room = input("Lets start by creating a room. A room can be anything from a bedroom, living room, bathroom, garage, truck, etc.\nEnter the name of your first room:\n")
-        # tutorial_storage = input("Now that we we have a room, lets add a storage in that room. A storage can be a desk, vanity, folder, locker, etc.\nEnter the name of your storage:\n") 
-        # tutorial_item = input("Now that we have a room and a storage in that room, lets add an item in that storage. An item can be a pencil, check, pen, paper, etc.\nEnter the name of an item:\n")
-        # self.tracer.addKeyValue(tutorial_room, tutorial_storage)
-        # self.tracer.insertItem(tutorial_room, tutorial_storage, tutorial_item)
         
         while(choice != "5"):
             print("What would you like to do?")
@@ -159,7 +220,7 @@ class Tracer:
                 break
             else:
                 print(f"Error: Invalid operation '{operation}'")
-        
+"""       
     # new shit
         
     def load_data(self):

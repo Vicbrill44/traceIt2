@@ -68,13 +68,13 @@ class SLLStorage:
         # will remove some strorage from the room that you dont want
         
         if self.numberStorages == 0:
-            return print("There are no storages to remove")
+            return 0
         
         if self.first.storageName == storageName:
             self.first = self.first.next
             self.numberStorages -= 1
             print(f"Successfully removed {storageName}")
-            return
+            return 1
             
         currentNode = self.first
         
@@ -83,23 +83,26 @@ class SLLStorage:
                 currentNode.next = currentNode.next.next
                 self.numberStorages -= 1
                 print(f"Successfully removed {storageName}")
-                return
+                return 1
             currentNode = currentNode.next
         
         print(f"{storageName} does not exist in this room")
+        return -1
 
     def addItem(self, strgName:str, item: str):
         if self.numberStorages == 0:
-            return print("There are no storages to add items to.")
+            print("There are no storages to add items to.")
+            return 0
         
         currentNode = self.first
         while currentNode:
             if currentNode.storageName == strgName:
                 currentNode.appendItem(item)
-                return
+                return 1
             currentNode = currentNode.next          
             
         print(f"{strgName} does not exist in this room")
+        return -1
 
     def findStorage(self, storageName:str) -> int:
         currentNode = self.first
@@ -111,21 +114,23 @@ class SLLStorage:
         
         return found
     
+    # seems like a flaw here, what if the item does not exist in the storage
     def removeItemfromStorage(self, strgName:str, item:str):
         if self.numberStorages == 0:
-            return print("There are no storages to remove")
-        
+            print("There are no storages to remove from")
+            return 0
         currentNode = self.first
         
         while currentNode:
             if currentNode.storageName == strgName:
                 currentNode.removeItem(item)
                 print(f"Successfully removed {item} from {strgName}")
-                return
+                return 1
             
             currentNode = currentNode.next
 
         print(f"Error: The storage '{strgName}' does not exist in this room")
+        return -1
     
     def printStorageItems(self, strgName):
         if self.numberStorages == 0:

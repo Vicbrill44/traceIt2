@@ -38,21 +38,20 @@ class HashMap:
         """ The key is the room and the value is a storage"""
         # I think I should remove the ability to add a room and a storage at the same time 
         idx = self.getIndex(key)
-        print(idx)
         if self.map[idx] == None:
             self.map[idx] = HashNode(key)
             self.numKeys = self.numKeys + 1
             print(f"{key} was successfully added")
         else:
             print(f"{key} already exist")
-            return 
+            return -1
                 
         #rehash if over 70% 
         load = int(((self.mapSize * 70) / 100))
         if self.numKeys >= load:
             print("rehashing")
             self.reHash()
-        
+        return idx
         
     def getIndex(self, key:str, isReHashing:bool = False, newHash:int = 0) -> int:
         if not isReHashing:
@@ -198,7 +197,7 @@ class HashMap:
         # There is def a better way to do this, I just wanted to test out this way 
         # other way would be to get index of key first and then check if it exists and if so del it 
         if self.numKeys == 0:
-            return print("There are no rooms to delete")
+            return -1 #print("There are no rooms to delete")
         for node in self.map:
             if node is not None:
                 if node.room == key:
@@ -207,9 +206,10 @@ class HashMap:
                     self.map[idx] = None
                     del node
                     self.numKeys = self.numKeys - 1
-                    print(f"Successfully deleted {key}")
-                    return
-        print(f"Error: {key} does not exist")
+                    #print(f"Successfully deleted {key}")
+                    return 1
+        # print(f"Error: {key} does not exist")
+        return 0 # key just simply does not exist
         
         
     # New shit

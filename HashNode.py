@@ -48,7 +48,7 @@ class HashNode:
         if storageName == "":
             print("Error: Please enter a valid storage name that is not blank")
             print("")
-            return
+            return -1
         
         found = self.storageExists(storageName)
         
@@ -56,15 +56,17 @@ class HashNode:
         if found == 1:
             print(f"Error: {storageName} already exists in the room")
             print("")
-            return 
+            return 0
         
         self.storages.appendStorage(storageName)
         self.numStorages =  self.numStorages + 1
         print(f"Successfully added {storageName} to the room")
+        return 1
     
     def removeStorage(self, storageName:str):
         self.storages.remove(storageName)
         self.numStorages = self.numStorages - 1
+        
     
     def printStorages(self):
         self.storages.printList()
